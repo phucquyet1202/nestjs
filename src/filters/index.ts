@@ -4,7 +4,6 @@ import {
   ArgumentsHost,
   HttpException,
 } from '@nestjs/common';
-import { error } from 'console';
 import { Request, Response } from 'express';
 
 @Catch(HttpException) // Decorator @Catch để chỉ định loại ngoại lệ mà filter này sẽ xử lý, trong trường hợp này là HttpException.

@@ -2,7 +2,14 @@
 https://docs.nestjs.com/controllers#controllers
 */
 
-import { Body, Controller, Get, Post, Req } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  NotFoundException,
+  Post,
+  Req,
+} from '@nestjs/common';
 import { UserService } from './user.service';
 import { UserDto } from './dto/user.dto';
 import { Request } from 'express';
@@ -11,9 +18,12 @@ import { Request } from 'express';
 export class UserController {
   constructor(private userService: UserService) {}
   @Get()
-  getUsers() {
+  async getUsers(): Promise<UserDto[]> {
     const users = this.userService.getUsers();
-    return users;
+    if (users.length > 0) {
+      return Promise.resolve(users);
+    }
+    throw new NotFoundException('Khong ton tai nguoi dung');
   }
   @Post()
   register(@Body() user: UserDto) {

@@ -1,6 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { Logger, ValidationPipe } from '@nestjs/common';
+import { HttpExceptionFilter } from './filters';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -11,6 +12,9 @@ async function bootstrap() {
     credentials: true, // Cho phép chia sẻ cookie giữa các tên miền
   });
   app.useGlobalPipes(new ValidationPipe());
+  // Đăng ký filter cho toàn bộ ứng dụng
+  app.useGlobalFilters(new HttpExceptionFilter());
+
   await app.listen(8080);
 }
 bootstrap();

@@ -8,8 +8,10 @@ export class UserService {
 
   register(user: UserDto) {
     user.role = UserRole.USER; // Đặt giá trị mặc định cho role
-    console.log(user);
     this.users.push(user);
     return user;
+  }
+  getUsers() {
+    return this.users;
   }
 }

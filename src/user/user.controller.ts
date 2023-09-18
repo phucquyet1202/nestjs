@@ -9,15 +9,18 @@ import {
   NotFoundException,
   Post,
   Req,
+  UseGuards,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { UserDto } from './dto/user.dto';
 import { Request } from 'express';
+import { AuthGuard } from '../guard/index';
 
 @Controller('user')
 export class UserController {
   constructor(private userService: UserService) {}
   @Get()
+  @UseGuards(new AuthGuard())
   async getUsers(): Promise<UserDto[]> {
     const users = this.userService.getUsers();
     if (users.length > 0) {

@@ -10,17 +10,20 @@ import {
   Post,
   Req,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { UserDto } from './dto/user.dto';
 import { Request } from 'express';
 import { AuthGuard } from '../guard/index';
+import { LoggingInterceptor } from '../interceptor/index';
 
 @Controller('user')
 export class UserController {
   constructor(private userService: UserService) {}
   @Get()
   @UseGuards(new AuthGuard())
+  @UseInterceptors(new LoggingInterceptor())
   async getUsers(): Promise<UserDto[]> {
     const users = this.userService.getUsers();
     if (users.length > 0) {

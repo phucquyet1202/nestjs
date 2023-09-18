@@ -1,0 +1,39 @@
+Middleware, Guard và Interceptor là ba khái niệm quan trọng trong NestJS 
+để thực hiện các tác vụ trung gian và xử lý trong ứng dụng của bạn. 
+Dưới đây là sự khác nhau giữa chúng:
+
+1. **Middleware:**
+   - **Mục tiêu chính:** Middleware thường được sử dụng để thực hiện xử lý trung gian 
+   liên quan đến request và response.
+   - **Sử dụng cho:** Xác thực, ghi log, xử lý dữ liệu đầu vào, kiểm tra và thay đổi 
+   request hoặc response.
+   - **Áp dụng cho:** Middleware có thể được áp dụng cho toàn bộ ứng dụng hoặc cho 
+   một phạm vi cụ thể.
+   - **Kiểu hoạt động:** Middleware là một chuỗi xử lý liên tiếp, mỗi phần thực hiện 
+   một tác vụ cụ thể. Các middleware có thể chuyển điều khiển cho middleware tiếp theo 
+   bằng cách gọi hàm `next()` hoặc kết thúc xử lý và trả về response.
+
+2. **Guard:**
+   - **Mục tiêu chính:** Guard thường được sử dụng để kiểm tra và phân quyền 
+   truy cập đối với các route hoặc controllers cụ thể.
+   - **Sử dụng cho:** Kiểm tra quyền truy cập, xác định xem request có được 
+   tiếp tục hoặc từ chối.
+   - **Áp dụng cho:** Guard thường được áp dụng cho các route hoặc controllers cụ thể.
+   - **Kiểu hoạt động:** Guard xác định xem request có thể tiếp tục hoặc bị 
+   từ chối bằng cách trả về giá trị `true` hoặc `false`.
+
+3. **Interceptor:**
+   - **Mục tiêu chính:** Interceptor thường được sử dụng để chuyển đổi hoặc thay đổi 
+   dữ liệu request hoặc response.
+   - **Sử dụng cho:** Thay đổi dữ liệu, ghi log, thêm thông tin vào request hoặc response.
+   - **Áp dụng cho:** Interceptor có thể áp dụng cho toàn bộ ứng dụng hoặc cho một 
+   phạm vi cụ thể.
+   - **Kiểu hoạt động:** Interceptor có thể thay đổi dữ liệu request hoặc response 
+   trước hoặc sau khi chúng đi qua controller. Chúng có thể thực hiện các xử lý 
+   bất đồng bộ trước hoặc sau khi request hoàn thành.
+
+Tóm lại, Middleware thực hiện xử lý trung gian liên quan đến request và response, 
+Guard kiểm tra và phân quyền truy cập, 
+và Interceptor chuyển đổi dữ liệu trong request hoặc response. 
+Các khái niệm này có mục tiêu và ứng dụng riêng biệt trong việc xây dựng 
+ứng dụng NestJS của bạn.

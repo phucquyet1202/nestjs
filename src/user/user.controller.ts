@@ -15,8 +15,8 @@ import {
 import { UserService } from './user.service';
 import { UserDto } from './dto/user.dto';
 import { Request } from 'express';
-import { AuthGuard } from '../guard/index';
-import { LoggingInterceptor } from '../interceptor/index';
+import { AuthGuard } from '../core/guard/index';
+import { LoggingInterceptor } from '../core/interceptor/index';
 
 @Controller('user')
 export class UserController {

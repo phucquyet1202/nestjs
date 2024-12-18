@@ -1,10 +1,29 @@
-pipeline{
+pipeline {
     agent any
-    stages{
-        stage('Clone'){
-            steps{
-                git 'https://github.com/phucquyet1202/nestjs.git'
+    
+    tools {
+        nodejs "nodejs"
+    }
+
+    stages {
+        stage("install") {
+            steps {
+                sh 'npm install'
             }
+        }
+        stage("build") {
+            steps {
+                sh 'npm run build'
+            }
+        }
+    } 
+    
+    post {
+        success {
+            echo "SUCCESSFUL"
+        }
+        failure {
+            echo "FAILED"
         }
     }
 }

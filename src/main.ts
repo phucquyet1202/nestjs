@@ -10,8 +10,8 @@ async function bootstrap() {
 
   app.use(
     compression({
-      level: 6, // Mức độ nén, từ 0 đến 9 (0 là không nén, 9 là nén tối đa)
-      threshold: 1024, // Chỉ nén những phản hồi có kích thước lớn hơn 1KB
+      level: 6,
+      threshold: 1024,
       filter: (req, res) => {
         return req.headers['x-no-compression']
           ? false

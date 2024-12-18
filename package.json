@@ -6,8 +6,8 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
-    "build": "nest build",
-    "postbuild": "xcopy public dist\\public /E /I /Y",
+    "build": "nest build", 
+    "postbuild": "cp -r public dist/public",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "dev": "nest start --watch",

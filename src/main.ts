@@ -20,7 +20,8 @@ async function bootstrap() {
     }),
   ),
     app.use(cookieParser());
+  app.enableCors();
   app.useGlobalPipes(new ValidationPipe());
-  await app.listen(8080);
+  await app.listen(process.env.PORT);
 }
 bootstrap();

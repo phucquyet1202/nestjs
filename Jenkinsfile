@@ -15,12 +15,17 @@ pipeline {
             steps {
                 script {
                     // Đọc tệp .env và xuất các biến môi trường
-                    sh '''
-                        #!/bin/bash
-                        set -o allexport
-                        source /var/jenkins_home/env-files/.env
-                        set +o allexport
-                    '''
+                    def envFile = readFile('/var/jenkins_home/env-files/.env')
+                    def envVars = envFile.split('\n')
+                    for (line in envVars) {
+                        if (line.trim()) {
+                            def parts = line.split('=')
+                            if (parts.length == 2) {
+                                // Thiết lập biến môi trường
+                                sh "export ${parts[0]}='${parts[1]}'"
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -34,7 +39,6 @@ pipeline {
                 script {
                     // Thiết lập các biến môi trường trước khi đăng nhập
                     sh '''
-                        #!/bin/bash
                         echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
                     '''
                 }

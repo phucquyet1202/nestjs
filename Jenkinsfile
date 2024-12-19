@@ -5,6 +5,10 @@ pipeline {
         nodejs "nodejs"
     }
 
+    environment {
+        // Đặt các biến môi trường mặc định, nếu cần
+    }
+
     stages {
         stage("install") {
             steps {
@@ -23,9 +27,9 @@ pipeline {
                             envVars[parts[0]] = parts[1]
                         }
                     }
-                    // Thiết lập các biến môi trường trong shell
+                    // Thiết lập các biến môi trường
                     envVars.each { key, value ->
-                        sh "export ${key}=${value}"
+                        env[key] = value
                     }
                 }
             }
@@ -39,7 +43,7 @@ pipeline {
             steps { 
                 script {
                     // Thiết lập các biến môi trường trước khi đăng nhập
-                    sh "echo ${env.DOCKER_PASSWORD} | docker login -u ${env.DOCKER_USERNAME} --password-stdin"
+                    sh 'echo ${env.DOCKER_PASSWORD} | docker login -u ${env.DOCKER_USERNAME} --password-stdin'
                 }
             } 
         } 

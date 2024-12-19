@@ -18,7 +18,8 @@ pipeline {
                     envFile.split('\n').each { line ->
                         def parts = line.split('=')
                         if (parts.length == 2) {
-                            env[parts[0]] = parts[1]
+                            // Sử dụng sh để xuất các biến môi trường
+                            sh "export ${parts[0]}=${parts[1]}"
                         }
                     }
                 }
@@ -32,9 +33,10 @@ pipeline {
         stage('Login to Docker Hub') { 
             steps { 
                 script {
-                    withEnv(["DOCKER_USERNAME=${env.DOCKER_USERNAME}", "DOCKER_PASSWORD=${env.DOCKER_PASSWORD}"]) {
-                        sh 'echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin'
-                    }
+                    // Thiết lập các biến môi trường trước khi đăng nhập
+                    sh 'export DOCKER_USERNAME=$(grep DOCKER_USERNAME /var/jenkins_home/env-files/.env | cut -d '=' -f2)'
+                    sh 'export DOCKER_PASSWORD=$(grep DOCKER_PASSWORD /var/jenkins_home/env-files/.env | cut -d '=' -f2)'
+                    sh 'echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin'
                 }
             } 
         } 

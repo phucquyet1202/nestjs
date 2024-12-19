@@ -14,13 +14,18 @@ pipeline {
         stage('Setup Environment') {
             steps {
                 script {
+                    // Đọc tệp .env và thiết lập các biến môi trường
                     def envFile = readFile('/var/jenkins_home/env-files/.env')
+                    def envVars = [:]
                     envFile.split('\n').each { line ->
                         def parts = line.split('=')
                         if (parts.length == 2) {
-                            // Sử dụng sh để xuất các biến môi trường
-                            sh "export ${parts[0]}=${parts[1]}"
+                            envVars[parts[0]] = parts[1]
                         }
+                    }
+                    // Thiết lập các biến môi trường trong shell
+                    envVars.each { key, value ->
+                        sh "export ${key}=${value}"
                     }
                 }
             }
@@ -34,9 +39,7 @@ pipeline {
             steps { 
                 script {
                     // Thiết lập các biến môi trường trước khi đăng nhập
-                    sh 'export DOCKER_USERNAME=$(grep DOCKER_USERNAME /var/jenkins_home/env-files/.env | cut -d '=' -f2)'
-                    sh 'export DOCKER_PASSWORD=$(grep DOCKER_PASSWORD /var/jenkins_home/env-files/.env | cut -d '=' -f2)'
-                    sh 'echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin'
+                    sh "echo ${env.DOCKER_PASSWORD} | docker login -u ${env.DOCKER_USERNAME} --password-stdin"
                 }
             } 
         } 

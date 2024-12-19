@@ -10,8 +10,8 @@ async function bootstrap() {
 
   app.use(
     compression({
-      level: 8,
-      threshold: 2048,
+      level: 6,
+      threshold: 1024,
       filter: (req, res) => {
         return req.headers['x-no-compression']
           ? false

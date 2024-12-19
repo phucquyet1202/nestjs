@@ -38,7 +38,7 @@ pipeline {
                 }
             }
             steps {
-                sh 'docker run --env-file .env -p 3000:3000 --name my-nestjs-container my-nestjs-app'
+                sh 'docker run --env-file./.env -p 4000:4000 --name my-nestjs-container my-nestjs-app'
             }
         }
     }

@@ -16,6 +16,7 @@ pipeline {
                 script {
                     // Đọc tệp .env và xuất các biến môi trường
                     sh '''
+                        #!/bin/bash
                         set -o allexport
                         source /var/jenkins_home/env-files/.env
                         set +o allexport
@@ -33,6 +34,7 @@ pipeline {
                 script {
                     // Thiết lập các biến môi trường trước khi đăng nhập
                     sh '''
+                        #!/bin/bash
                         echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
                     '''
                 }

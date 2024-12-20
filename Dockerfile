@@ -11,6 +11,6 @@ RUN npm install
 COPY . .
 # Mở cổng mà ứng dụng sẽ lắng nghe
 EXPOSE 8080
-
+ENV NODE_OPTIONS="--max-old-space-size=4096"
 # Lệnh để khởi động ứng dụng
 CMD ["npm","run", "dev"]

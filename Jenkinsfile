@@ -4,18 +4,10 @@ pipeline {
     tools {
         nodejs "nodejs"
     }
-
+environment { 
+    DOCKER_HOST = "tcp://localhost:2375" 
+    }
     stages {
-        stage("Check Docker Connection") { 
-    steps { 
-        script { 
-    // Đặt biến môi trường DOCKER_HOST 
-sh 'export DOCKER_HOST=tcp://localhost:2375' 
-// Kiểm tra kết nối Docker 
-sh 'docker -H tcp://localhost:2375 info' 
-} 
-} 
-}
         stage("install") {
             steps {
                 sh 'npm install'
@@ -41,8 +33,8 @@ sh 'docker -H tcp://localhost:2375 info'
         }
         stage('Build') { 
             steps { 
-                sh 'export DOCKER_HOST=tcp://localhost:2375'
-                sh 'docker -H tcp://localhost:2375 build -t quyet240/nestjs:latest .'
+              sh 'export DOCKER_HOST=tcp://localhost:2375' 
+              sh 'docker -H tcp://localhost:2375 build -t quyet240/nestjs:latest .'
             } 
         } 
         stage('Login to Docker Hub') { 
@@ -64,6 +56,7 @@ sh 'docker -H tcp://localhost:2375 info'
         } 
         stage('Deploy') { 
             steps { 
+                sh 'export DOCKER_HOST=tcp://localhost:2375'
                 sh 'docker -H tcp://localhost:2375 run -d -p 8081:8081 --name nestjs-container quyet240/nestjs:latest'
             }
         }
@@ -89,3 +82,4 @@ def updateGitHubCommitStatus(String state, String description) {
         commitShaSource: [$class: 'ManuallyEnteredShaSource', sha: commitSha] 
     ]) 
 }
+ 

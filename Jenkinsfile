@@ -4,18 +4,10 @@ pipeline {
     tools {
         nodejs "nodejs"
     }
-
-    environment { 
-        DOCKER_HOST = "tcp://localhost:2375" 
+environment { 
+    DOCKER_HOST = "tcp://localhost:2375" 
     }
-
     stages {
-        stage("Check Docker") {
-            steps {
-                sh 'docker --version'
-                sh 'docker -H tcp://localhost:2375 run hello-world'
-            }
-        }
         stage("install") {
             steps {
                 sh 'npm install'
@@ -41,7 +33,7 @@ pipeline {
         }
         stage('Build') { 
             steps { 
-                sh 'docker -H tcp://localhost:2375 build -t quyet240/nestjs:latest .' 
+                sh 'docker -H tcp://localhost:2375 build -t quyet240/nestjs:latest .'
             } 
         } 
         stage('Login to Docker Hub') { 
@@ -49,19 +41,19 @@ pipeline {
                 script {
                     // Thiết lập các biến môi trường trước khi đăng nhập
                     sh '''
-                        echo $DOCKER_PASSWORD | docker -H tcp://localhost:2375 login -u $DOCKER_USERNAME --password-stdin
+                        echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
                     '''
                 }
             } 
         } 
         stage('Push to Docker Hub') { 
             steps { 
-                sh 'docker -H tcp://localhost:2375 push quyet240/nestjs:latest' 
+                sh 'docker push quyet240/nestjs:latest' 
             } 
         } 
         stage('Deploy') { 
             steps { 
-                sh 'docker -H tcp://localhost:2375 run -d -p 8081:8081 --name nestjs-container quyet240/nestjs:latest' 
+                sh 'docker run -d -p 8081:8081 --name nestjs-container quyet240/nestjs:latest' 
             }
         }
     }

@@ -12,15 +12,16 @@ pipeline {
                 sh 'npm install'
             }
         }
-//         stage('Build') { 
-//             steps { 
-//              withDockerRegistry(credentialsId: 'docker-hub', url: 'https://index.docker.io/v1/') {
-//     sh label: '', script: 'docker build -t quyet240/nestjs:latest .'
-//     sh label: '', script: 'docker push quyet240/nestjs:latest'
-
-// }
-//             } 
-//         } 
+        stage('Build') { 
+            steps { 
+              sh 'npm run build'
+            } 
+        } 
+        stage('Start') { 
+            steps { 
+              sh 'npm run start'
+            } 
+        } 
     }
     post {
         success {

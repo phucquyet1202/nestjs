@@ -3,6 +3,8 @@ pipeline {
     
     tools {
         nodejs "nodejs"
+        jdk "OpenJDK8"
+        maven "Maven3"
     }
 environment { 
     DOCKER_HOST = "tcp://localhost:2375" 
@@ -33,33 +35,14 @@ environment {
         }
         stage('Build') { 
             steps { 
-              sh 'export DOCKER_HOST=tcp://localhost:2375' 
-              sh 'docker -H tcp://localhost:2375 build -t quyet240/nestjs:latest .'
+             withDockerRegistry(credentialsId: 'docker-hub', url: 'https://index.docker.io/v1/') {
+    sh label: '', script: 'docker build -t quyet240/nestjs:latest .'
+    sh label: '', script: 'docker push quyet240/nestjs:latest'
+
+}
             } 
         } 
-        stage('Login to Docker Hub') { 
-            steps { 
-                script {
-                    sh 'export DOCKER_HOST=tcp://localhost:2375'
-                    // Thiết lập các biến môi trường trước khi đăng nhập
-                  sh ''' 
-                  echo $DOCKER_PASSWORD | docker -H tcp://localhost:2375 login -u $DOCKER_USERNAME --password-stdin 
-                  '''
-                }
-            } 
-        } 
-        stage('Push to Docker Hub') { 
-            steps { 
-                sh 'export DOCKER_HOST=tcp://localhost:2375'
-                sh 'docker -H tcp://localhost:2375 push quyet240/nestjs:latest'
-            } 
-        } 
-        stage('Deploy') { 
-            steps { 
-                sh 'export DOCKER_HOST=tcp://localhost:2375'
-                sh 'docker -H tcp://localhost:2375 run -d -p 8081:8081 --name nestjs-container quyet240/nestjs:latest'
-            }
-        }
+       
     }
     post {
         success {

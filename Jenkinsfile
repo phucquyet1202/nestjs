@@ -5,21 +5,17 @@ pipeline {
         nodejs "nodejs"
     }
 
-    environment {
-        DOCKER_HOST = "tcp://localhost:2375"
-    }
-
     stages {
-        stage("Check Docker Connection") {
-            steps {
-                script {
-                    // Đặt biến môi trường DOCKER_HOST
-                    sh 'export DOCKER_HOST=tcp://localhost:2375'
-                    // Kiểm tra kết nối Docker
-                    sh 'docker -H tcp://localhost:2375 info'
-                }
-            }
-        }
+        stage("Check Docker Connection") { 
+    steps { 
+        script { 
+    // Đặt biến môi trường DOCKER_HOST 
+sh 'export DOCKER_HOST=tcp://localhost:2375' 
+// Kiểm tra kết nối Docker 
+sh 'docker -H tcp://localhost:2375 info' 
+} 
+} 
+}
         stage("install") {
             steps {
                 sh 'npm install'
@@ -45,10 +41,8 @@ pipeline {
         }
         stage('Build') { 
             steps { 
-                script {
-                    sh 'export DOCKER_HOST=tcp://localhost:2375'
-                    sh 'docker -H tcp://localhost:2375 build -t quyet240/nestjs:latest .'
-                }
+                sh 'export DOCKER_HOST=tcp://localhost:2375'
+                sh 'docker -H tcp://localhost:2375 build -t quyet240/nestjs:latest .'
             } 
         } 
         stage('Login to Docker Hub') { 
@@ -56,26 +50,21 @@ pipeline {
                 script {
                     sh 'export DOCKER_HOST=tcp://localhost:2375'
                     // Thiết lập các biến môi trường trước khi đăng nhập
-                    sh '''
-                        echo $DOCKER_PASSWORD | docker -H tcp://localhost:2375 login -u $DOCKER_USERNAME --password-stdin
-                    '''
+                  sh ''' 
+                  echo $DOCKER_PASSWORD | docker -H tcp://localhost:2375 login -u $DOCKER_USERNAME --password-stdin 
+                  '''
                 }
             } 
         } 
         stage('Push to Docker Hub') { 
             steps { 
-                script {
-                    sh 'export DOCKER_HOST=tcp://localhost:2375'
-                    sh 'docker -H tcp://localhost:2375 push quyet240/nestjs:latest'
-                }
-            }
+                sh 'export DOCKER_HOST=tcp://localhost:2375'
+                sh 'docker -H tcp://localhost:2375 push quyet240/nestjs:latest'
+            } 
         } 
         stage('Deploy') { 
             steps { 
-                script {
-                    sh 'export DOCKER_HOST=tcp://localhost:2375'
-                    sh 'docker -H tcp://localhost:2375 run -d -p 8081:8081 --name nestjs-container quyet240/nestjs:latest'
-                }
+                sh 'docker -H tcp://localhost:2375 run -d -p 8081:8081 --name nestjs-container quyet240/nestjs:latest'
             }
         }
     }

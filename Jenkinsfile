@@ -4,9 +4,16 @@ pipeline {
     tools {
         nodejs "nodejs"
     }
-environment { 
-    DOCKER_HOST = "tcp://localhost:2375" 
-    }
+stage("Check Docker Connection") { 
+    steps { 
+        script { 
+    // Đặt biến môi trường DOCKER_HOST 
+sh 'export DOCKER_HOST=tcp://localhost:2375' 
+// Kiểm tra kết nối Docker 
+sh 'docker -H tcp://localhost:2375 info' 
+} 
+} 
+}
     stages {
         stage("install") {
             steps {
@@ -33,12 +40,14 @@ environment {
         }
         stage('Build') { 
             steps { 
+                sh 'export DOCKER_HOST=tcp://localhost:2375'
                 sh 'docker -H tcp://localhost:2375 build -t quyet240/nestjs:latest .'
             } 
         } 
         stage('Login to Docker Hub') { 
             steps { 
                 script {
+                    sh 'export DOCKER_HOST=tcp://localhost:2375'
                     // Thiết lập các biến môi trường trước khi đăng nhập
                   sh ''' 
                   echo $DOCKER_PASSWORD | docker -H tcp://localhost:2375 login -u $DOCKER_USERNAME --password-stdin 
@@ -48,6 +57,7 @@ environment {
         } 
         stage('Push to Docker Hub') { 
             steps { 
+                sh 'export DOCKER_HOST=tcp://localhost:2375'
                 sh 'docker -H tcp://localhost:2375 push quyet240/nestjs:latest'
             } 
         } 

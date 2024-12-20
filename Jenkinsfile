@@ -40,20 +40,20 @@ environment {
             steps { 
                 script {
                     // Thiết lập các biến môi trường trước khi đăng nhập
-                    sh '''
-                        echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
-                    '''
+                  sh ''' 
+                  echo $DOCKER_PASSWORD | docker -H tcp://localhost:2375 login -u $DOCKER_USERNAME --password-stdin 
+                  '''
                 }
             } 
         } 
         stage('Push to Docker Hub') { 
             steps { 
-                sh 'docker push quyet240/nestjs:latest' 
+                sh 'docker -H tcp://localhost:2375 push quyet240/nestjs:latest'
             } 
         } 
         stage('Deploy') { 
             steps { 
-                sh 'docker run -d -p 8081:8081 --name nestjs-container quyet240/nestjs:latest' 
+                sh 'docker -H tcp://localhost:2375 run -d -p 8081:8081 --name nestjs-container quyet240/nestjs:latest'
             }
         }
     }

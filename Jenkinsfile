@@ -3,7 +3,6 @@ pipeline {
     
     tools {
         nodejs "nodejs"
-       
     }
 
     stages {
@@ -16,17 +15,27 @@ pipeline {
             steps { 
                 script { 
                     def envFile = readFile('/var/jenkins_home/env-files/.env') 
-                    def envVars = envFile.split('\n') for (line in envVars) { 
-                        if (line.trim()) { def parts = line.split('=') if (parts.length == 2) { // Thiết lập biến môi trường 
-        sh "export ${parts[0]}='${parts[1]}'" } } } } } }
+                    def envVars = envFile.split('\n') 
+                    for (line in envVars) { 
+                        if (line.trim()) { 
+                            def parts = line.split('=') 
+                            if (parts.length == 2) { 
+                                // Thiết lập biến môi trường 
+                                sh "export ${parts[0]}='${parts[1]}'" 
+                            } 
+                        } 
+                    } 
+                } 
+            }
+        }
         stage('Build') { 
             steps { 
-              sh 'npm run build'
+                sh 'npm run build'
             } 
         } 
         stage('Start') { 
             steps { 
-              sh 'npm run start'
+                sh 'npm run start'
             } 
         } 
     }

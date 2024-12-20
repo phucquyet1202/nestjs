@@ -4,7 +4,9 @@ pipeline {
     tools {
         nodejs "nodejs"
     }
-
+environment { 
+    DOCKER_HOST = "tcp://localhost:2375" 
+    }
     stages {
         stage("install") {
             steps {

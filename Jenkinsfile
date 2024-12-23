@@ -14,24 +14,32 @@ pipeline {
             }
         }
     
-         stage('Trigger GitHub Actions') {
+        stage('Trigger GitHub Actions') {
             steps {
                 script {
                     def apiUrl = "https://api.github.com/repos/phucquyet1202/nestjs/actions/workflows/node.js.yml/dispatches"
 
                     def requestBody = '{"ref": "master"}'
 
-                    // Gửi request POST tới GitHub API
-                    def response = httpRequest(
-                        httpMode: 'POST',
-                        url: apiUrl,
-                        customHeaders: [
-                            [name: 'Authorization', value: "Bearer ${env.GITHUB_TOKEN}"],
-                            [name: 'Accept', value: 'application/vnd.github.v3+json']
-                        ],
-                        requestBody: requestBody
-                    )
-                    echo "GitHub Actions response: ${response.content}"
+                    echo "API URL: ${apiUrl}"
+                    echo "Request Body: ${requestBody}"
+                    echo "Authorization Header: Bearer ${env.GITHUB_TOKEN}"
+
+                    try {
+                        // Gửi request POST tới GitHub API
+                        def response = httpRequest(
+                            httpMode: 'POST',
+                            url: apiUrl,
+                            customHeaders: [
+                                [name: 'Authorization', value: "Bearer ${env.GITHUB_TOKEN}"],
+                                [name: 'Accept', value: 'application/vnd.github.v3+json']
+                            ],
+                            requestBody: requestBody
+                        )
+                        echo "GitHub Actions response: ${response.content}"
+                    } catch (Exception e) {
+                        echo "Error: ${e.message}"
+                    }
                 }
             }
         }

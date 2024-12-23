@@ -60,7 +60,7 @@ pipeline {
             }
         }
     }
-
+//
     post {
         success {
             echo "SUCCESSFUL"

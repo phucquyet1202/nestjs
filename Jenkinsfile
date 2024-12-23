@@ -6,6 +6,8 @@ pipeline {
     }
     environment {
         GITHUB_TOKEN = credentials('github_action') // Lấy token từ Jenkins
+        echo "GITHUB_TOKEN is: ${env.GITHUB_TOKEN ? 'Available' : 'Not available'}"
+
     }
     stages {
         stage("install") {

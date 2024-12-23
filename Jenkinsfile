@@ -4,12 +4,20 @@ pipeline {
     tools {
         nodejs "nodejs"
     }
+
     environment {
         GITHUB_TOKEN = credentials('github_action') // Lấy token từ Jenkins
-        echo "GITHUB_TOKEN is: ${env.GITHUB_TOKEN ? 'Available' : 'Not available'}"
-
     }
+
     stages {
+        stage("Check GITHUB_TOKEN") {
+            steps {
+                script {
+                    echo "GITHUB_TOKEN is: ${env.GITHUB_TOKEN ? 'Available' : 'Not available'}"
+                }
+            }
+        }
+
         stage("install") {
             steps {
                 sh 'npm install'
@@ -52,6 +60,7 @@ pipeline {
             }
         }
     }
+
     post {
         success {
             echo "SUCCESSFUL"

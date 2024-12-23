@@ -4,7 +4,7 @@ pipeline {
     tools {
         nodejs "nodejs"
     }
-   environment {
+    environment {
         GITHUB_TOKEN = credentials('github_action') // Lấy token từ Jenkins
     }
     stages {
@@ -17,7 +17,7 @@ pipeline {
          stage('Trigger GitHub Actions') {
             steps {
                 script {
-                   def apiUrl = "https://api.github.com/repos/phucquyet1202/nestjs/actions/workflows/node.js.yml/dispatches"
+                    def apiUrl = "https://api.github.com/repos/phucquyet1202/nestjs/actions/workflows/node.js.yml/dispatches"
 
                     def requestBody = '{"ref": "master"}'
 

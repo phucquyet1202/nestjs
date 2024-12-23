@@ -1,14 +1,14 @@
 name: Node.js CI
 
 on:
+  workflow_dispatch: # Cho phép kích hoạt workflow qua API
   push:
-    branches: [ "master" ]
+    branches: ['master']
   pull_request:
-    branches: [ "master" ]
+    branches: ['master']
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     strategy:
@@ -16,25 +16,25 @@ jobs:
         node-version: [18.x, 20.x, 22.x]
 
     steps:
-    - uses: actions/checkout@v4
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v4
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
+      - uses: actions/checkout@v4
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
 
-    - name: Create .env file
-      run: |
-        echo "PORT=${{ secrets.PORT }}" >> .env
-        echo "MONGODB_URI=${{ secrets.MONGODB_URI }}" >> .env
-        echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> .env
-        echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> .env
-        echo "EXPIRES_IN=${{ secrets.EXPIRES_IN }}" >> .env
-        echo "IMAGE_PATH=${{ secrets.IMAGE_PATH }}" >> .env
-        echo "CLOUDINARY_CLOUD_NAME=${{ secrets.CLOUDINARY_CLOUD_NAME }}" >> .env
-        echo "CLOUDINARY_API_KEY=${{ secrets.CLOUDINARY_API_KEY }}" >> .env
-        echo "CLOUDINARY_API_SECRET=${{ secrets.CLOUDINARY_API_SECRET }}" >> .env
+      - name: Create .env file
+        run: |
+          echo "PORT=${{ secrets.PORT }}" >> .env
+          echo "MONGODB_URI=${{ secrets.MONGODB_URI }}" >> .env
+          echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> .env
+          echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> .env
+          echo "EXPIRES_IN=${{ secrets.EXPIRES_IN }}" >> .env
+          echo "IMAGE_PATH=${{ secrets.IMAGE_PATH }}" >> .env
+          echo "CLOUDINARY_CLOUD_NAME=${{ secrets.CLOUDINARY_CLOUD_NAME }}" >> .env
+          echo "CLOUDINARY_API_KEY=${{ secrets.CLOUDINARY_API_KEY }}" >> .env
+          echo "CLOUDINARY_API_SECRET=${{ secrets.CLOUDINARY_API_SECRET }}" >> .env
 
-    - run: npm ci
-    - run: npm run build --if-present
+      - run: npm ci
+      - run: npm run build --if-present
     # - run: npm test

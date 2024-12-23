@@ -19,7 +19,13 @@ pipeline {
                 script {
                     def apiUrl = "https://api.github.com/repos/phucquyet1202/nestjs/actions/workflows/node.js.yml/dispatches"
 
-                    def requestBody = '{"ref": "master"}'
+                    // Cập nhật request body để bao gồm event_type
+                    def requestBody = '''{
+                        "event_type": "jenkins-trigger",   // Tên sự kiện bạn gửi từ Jenkins
+                        "client_payload": {
+                            "ref": "refs/heads/master"
+                        }
+                    }'''
 
                     echo "API URL: ${apiUrl}"
                     echo "Request Body: ${requestBody}"

@@ -17,7 +17,7 @@ pipeline {
          stage('Trigger GitHub Actions') {
             steps {
                 script {
-                   def apiUrl = "https://github.com/phucquyet1202/nestjs/actions/workflows/node.js.yml"
+                   def apiUrl = "https://api.github.com/repos/phucquyet1202/nestjs/actions/workflows/node.js.yml/dispatches"
 
                     def requestBody = '{"ref": "master"}'
 

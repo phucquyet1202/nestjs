@@ -19,7 +19,7 @@ pipeline {
                 script {
                     def apiUrl = "https://api.github.com/repos/phucquyet1202/nestjs/actions/workflows/node.js.yml/dispatches"
 
-                    // Cập nhật request body để bao gồm event_type
+                    // Cập nhật request body để bao gồm event_type và ref đúng
                     def requestBody = '''{
                         "event_type": "jenkins-trigger",   // Tên sự kiện bạn gửi từ Jenkins
                         "client_payload": {
@@ -29,7 +29,7 @@ pipeline {
 
                     echo "API URL: ${apiUrl}"
                     echo "Request Body: ${requestBody}"
-                    echo "Authorization Header: Bearer ${env.GITHUB_TOKEN}"
+                    echo "Authorization Header: Bearer **********"  // Đảm bảo ẩn token thực tế
 
                     try {
                         // Gửi request POST tới GitHub API

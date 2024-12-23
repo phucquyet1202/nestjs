@@ -9,6 +9,7 @@ import { ProductModule } from './product/product.module';
 import { CloudinaryModule } from './common/cloundinary/cloundinary.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { ScheduleModules } from './cron/ScheduleModule.module';
+import { AppController } from './app.controller';
 dotenv.config();
 @Module({
   imports: [
@@ -20,5 +21,6 @@ dotenv.config();
     CloudinaryModule,
     ScheduleModules,
   ],
+  controllers: [AppController],
 })
 export class AppModule {}

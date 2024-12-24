@@ -10,14 +10,6 @@ pipeline {
     }
 
     stages {
-        stage("Check GITHUB_TOKEN") {
-            steps {
-                script {
-                    echo "GITHUB_TOKEN is: ${env.GITHUB_TOKEN ? 'Available' : 'Not available'}"
-                }
-            }
-        }
-
         stage("install") {
             steps {
                 sh 'npm install'
@@ -31,11 +23,6 @@ pipeline {
 
                     // Cập nhật request body để chỉ bao gồm ref
                     def requestBody = '{"ref": "refs/heads/master"}'
-
-                    echo "API URL: ${apiUrl}"
-                    echo "Request Body: ${requestBody}"
-                    echo "Authorization Header: Bearer **********"  // Đảm bảo ẩn token thực tế
-
                     try {
                         // Gửi request POST tới GitHub API
                         def response = httpRequest(

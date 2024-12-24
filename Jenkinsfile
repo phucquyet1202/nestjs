@@ -30,7 +30,12 @@ pipeline {
                     def apiUrl = "https://api.github.com/repos/phucquyet1202/nestjs/actions/workflows/node.js.yml/dispatches"
 
                     // Cập nhật request body để bao gồm event_type và ref đúng
-                   def requestBody = '{"ref": "refs/heads/master"}'
+                    def requestBody = '''{
+                        "event_type": "jenkins-trigger",
+                        "client_payload": {
+                            "ref": "refs/heads/master"
+                        }
+                    }'''
 
                     echo "API URL: ${apiUrl}"
                     echo "Request Body: ${requestBody}"
@@ -45,11 +50,13 @@ pipeline {
                                 [name: 'Authorization', value: "Bearer ${env.GITHUB_TOKEN}"],
                                 [name: 'Accept', value: 'application/vnd.github.v3+json']
                             ],
-                            requestBody: requestBody
+                            requestBody: requestBody,
+                            validResponseCodes: '100:599'
                         )
                         echo "GitHub Actions response: ${response.content}"
                     } catch (Exception e) {
                         echo "Error: ${e.message}"
+                        echo "Error Details: ${e}"
                     }
                 }
             }

@@ -2,7 +2,7 @@ name: Node.js CI
 
 on:
   repository_dispatch:
-    types: [jenkins-trigger] # Định nghĩa sự kiện mà Jenkins sẽ gửi
+    # types: [jenkins-trigger] # Định nghĩa sự kiện mà Jenkins sẽ gửi
   push:
     branches: ['master']
   pull_request:
